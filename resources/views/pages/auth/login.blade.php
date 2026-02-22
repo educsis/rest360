@@ -1,59 +1,98 @@
-<x-layouts::auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
-
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
-
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
-            @csrf
-
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autofocus
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
-
-            <!-- Password -->
-            <div class="relative">
-                <flux:input
-                    name="password"
-                    :label="__('Password')"
-                    type="password"
-                    required
-                    autocomplete="current-password"
-                    :placeholder="__('Password')"
-                    viewable
-                />
-
-                @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                        {{ __('Forgot your password?') }}
-                    </flux:link>
-                @endif
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Laravel') }} - Login</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="h-full">
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Header -->
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h1 class="login-title">Welcome to Mighty</h1>
+                <p class="login-subtitle">Sign in to access your restaurant management dashboard</p>
             </div>
 
-            <!-- Remember Me -->
-            <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
+            <!-- Design Form (Non-functional) -->
+            <div class="space-y-6">
+                <!-- Email Address -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-envelope mr-2 text-gray-400"></i>
+                        Email Address
+                    </label>
+                    <div class="form-input bg-gray-50 text-gray-500">
+                        Enter your email address
+                    </div>
+                </div>
 
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Log in') }}
-                </flux:button>
-            </div>
-        </form>
+                <!-- Password -->
+                <div class="form-group">
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="form-label mb-0">
+                            <i class="fas fa-lock mr-2 text-gray-400"></i>
+                            Password
+                        </label>
+                        <span class="text-sm text-primary-600">
+                            Forgot password?
+                        </span>
+                    </div>
+                    <div class="relative">
+                        <div class="form-input bg-gray-50 text-gray-500 pr-10">
+                            Enter your password
+                        </div>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                </div>
 
-        @if (Route::has('register'))
-            <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-                <span>{{ __('Don\'t have an account?') }}</span>
-                <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
+                <!-- Remember Me -->
+                <div class="flex items-center">
+                    <div class="h-4 w-4 border-2 border-gray-300 rounded bg-gray-50"></div>
+                    <label class="ml-2 block text-sm text-gray-700">
+                        Remember me for 30 days
+                    </label>
+                </div>
+
+                <!-- Submit Button (Design only) -->
+                <div>
+                    <div class="btn-primary cursor-default">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Sign in to Dashboard
+                    </div>
+                </div>
             </div>
-        @endif
+
+            <!-- Register Link (Design only) -->
+            <div class="mt-8 text-center">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">New to Mighty?</span>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <div class="w-full flex justify-center py-3 px-4 border border-primary-300 rounded-lg text-primary-600 bg-primary-50 cursor-default font-medium">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Create new account
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-8 text-center">
+                <p class="text-xs text-gray-500">
+                    © {{ date('Y') }} Mighty Restaurant Management. All rights reserved.
+                </p>
+            </div>
+        </div>
     </div>
-</x-layouts::auth>
